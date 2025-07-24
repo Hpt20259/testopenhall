@@ -1,94 +1,121 @@
 # Hệ thống giải phương trình bậc 2
 
-Hệ thống web cho phép nhập hệ số a, b, c để giải phương trình bậc 2 và lưu kết quả vào MySQL. Hệ thống hỗ trợ đầy đủ các chức năng xem, sửa, xóa phương trình đã lưu.
+Hệ thống web cho phép nhập a, b, c để giải phương trình bậc 2, lưu kết quả vào cơ sở dữ liệu và cho phép xem/sửa/xoá phương trình đã lưu.
 
 ## Công nghệ sử dụng
 
-### Frontend
-- React
-- TypeScript
-- Material-UI
-- Axios
+- **Frontend**: React, TypeScript, Material-UI
+- **Backend**: Python, Flask
+- **Cơ sở dữ liệu**: SQLite
 
-### Backend
-- Python
-- Flask
-- Flask-SQLAlchemy
-- Flask-CORS
-
-### Database
-- MySQL/MariaDB
-
-## Cài đặt và chạy
+## Cài đặt
 
 ### Yêu cầu
-- Node.js (v14+)
-- Python (v3.8+)
-- MySQL/MariaDB
 
-### Các bước cài đặt
+- Node.js (v14 trở lên)
+- Python (v3.6 trở lên)
+- pip (trình quản lý gói Python)
+- npm (trình quản lý gói Node.js)
 
-1. Clone repository
+### Cài đặt thủ công
+
+1. **Clone repository**
+
 ```bash
 git clone https://github.com/Hpt20259/testopenhall.git
 cd testopenhall
 ```
 
-2. Cài đặt dependencies cho backend
+2. **Cài đặt backend**
+
 ```bash
-cd backend
-pip install flask flask-cors flask-sqlalchemy pymysql python-dotenv
-cd ..
+pip install flask flask-cors python-dotenv
 ```
 
-3. Cài đặt dependencies cho frontend
+3. **Cài đặt frontend**
+
 ```bash
 cd frontend
 npm install
 cd ..
 ```
 
-4. Cấu hình môi trường
-- Tạo file `.env` trong thư mục gốc với nội dung:
-```
-# Cấu hình MySQL
-MYSQL_HOST=localhost
-MYSQL_USER=root
-MYSQL_PASSWORD=password
-MYSQL_DB=quadratic_equation_db
-MYSQL_PORT=3306
+## Chạy ứng dụng
 
-# Cấu hình Flask
-FLASK_APP=app.py
-FLASK_ENV=development
-FLASK_DEBUG=1
-FLASK_PORT=12000
+Bạn có thể chạy ứng dụng bằng script tự động:
 
-# Cấu hình Frontend
-REACT_APP_API_URL=http://localhost:12000
-FRONTEND_PORT=12001
-```
-
-5. Khởi động hệ thống
 ```bash
-chmod +x start.sh
 ./start.sh
 ```
 
+Hoặc chạy thủ công:
+
+1. **Khởi động backend**
+
+```bash
+cd /path/to/testopenhall
+python backend/app_sqlite.py
+```
+
+2. **Khởi động frontend (trong terminal khác)**
+
+```bash
+cd /path/to/testopenhall/frontend
+npm start
+```
+
 ## Sử dụng
+
 - Frontend: http://localhost:12001
 - Backend API: http://localhost:12000
 
-## Chức năng
-- Nhập hệ số a, b, c và giải phương trình bậc 2
-- Lưu kết quả vào cơ sở dữ liệu MySQL
-- Xem danh sách các phương trình đã lưu
-- Sửa hệ số của phương trình đã lưu
-- Xóa phương trình đã lưu
+### API Endpoints
 
-## API Endpoints
-- `GET /api/equations`: Lấy danh sách phương trình
-- `GET /api/equations/:id`: Lấy thông tin một phương trình
+- `GET /api/equations`: Lấy tất cả phương trình
+- `GET /api/equations/:id`: Lấy phương trình theo ID
 - `POST /api/equations`: Thêm phương trình mới
 - `PUT /api/equations/:id`: Cập nhật phương trình
 - `DELETE /api/equations/:id`: Xóa phương trình
+
+## Cấu trúc dự án
+
+```
+testopenhall/
+├── backend/
+│   ├── app.py             # Flask API
+│   └── app_sqlite.py      # Flask API với SQLite
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── EquationForm.tsx
+│   │   │   └── EquationList.tsx
+│   │   ├── App.tsx
+│   │   ├── index.tsx
+│   │   └── ...
+│   ├── package.json
+│   └── ...
+├── .env                   # Biến môi trường
+├── equations.db           # Cơ sở dữ liệu SQLite
+├── start.sh               # Script khởi động
+└── README.md
+```
+
+## Chức năng
+
+1. **Nhập phương trình**
+   - Nhập hệ số a, b, c
+   - Tính toán và hiển thị kết quả
+   - Lưu vào cơ sở dữ liệu
+
+2. **Quản lý phương trình**
+   - Xem danh sách phương trình đã lưu
+   - Sửa phương trình
+   - Xóa phương trình
+
+## Giao diện
+
+Giao diện được thiết kế với Material-UI, bao gồm:
+- Form nhập hệ số a, b, c
+- Nút tính toán và nút thêm bố trí cạnh nhau
+- Bảng hiển thị danh sách phương trình với các nút sửa, xóa

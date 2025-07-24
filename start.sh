@@ -1,30 +1,26 @@
 #!/bin/bash
 
-# Tải biến môi trường từ file .env
-export $(grep -v '^#' .env | xargs)
-
-# Khởi tạo cơ sở dữ liệu MySQL
-echo "Khởi tạo cơ sở dữ liệu MySQL..."
-cd backend
-python init_db.py
-
 # Khởi động backend
-echo "Khởi động backend Flask..."
-cd /workspace/testopenhall/backend
-python app.py &
+echo "Khởi động backend..."
+cd /workspace/testopenhall
+python backend/app_sqlite.py > backend.log 2>&1 &
 BACKEND_PID=$!
 
 # Đợi backend khởi động
 sleep 5
 
 # Khởi động frontend
-echo "Khởi động frontend React..."
+echo "Khởi động frontend..."
 cd /workspace/testopenhall/frontend
-npm start &
+npm start > frontend.log 2>&1 &
 FRONTEND_PID=$!
 
-# Xử lý khi nhận tín hiệu thoát
-trap "kill $BACKEND_PID $FRONTEND_PID; exit" SIGINT SIGTERM
+echo "Ứng dụng đã khởi động!"
+echo "Backend PID: $BACKEND_PID"
+echo "Frontend PID: $FRONTEND_PID"
+echo "Backend URL: http://localhost:12000"
+echo "Frontend URL: http://localhost:12001"
 
-# Giữ script chạy
+# Đợi người dùng nhấn Ctrl+C
+echo "Nhấn Ctrl+C để dừng ứng dụng..."
 wait
